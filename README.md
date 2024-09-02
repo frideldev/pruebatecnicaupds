@@ -34,12 +34,13 @@ Añade animaciones o transiciones para mejorar la experiencia del usuario.
 
 
 
-Criterios de evaluación:
+## Criterios de evaluación:
 
-Funcionalidad correcta del contador y del formulario.
-Calidad y legibilidad del código JavaScript.
-Uso efectivo de localStorage.
-Creatividad en las mejoras adicionales (si se implementan).
+- Funcionalidad correcta del contador y del formulario.
+- Calidad y legibilidad del código JavaScript.
+- Uso efectivo de localStorage.
+- Creatividad en las mejoras adicionales (si se implementan).
 
 Tiempo estimado: 1 hora.
+
 Realizar un fork del repositorio y realizar tu codigo en la carpeta que se encuentra tu nombre, cuando concluyas realizas un pull request. Buena Suerte.
