@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+body {
+    padding-top: 60px;
+    background: linear-gradient(135deg, #94ccdc, #f678d26e); 
+    color: #000000; /
+}
+.navbar {
+    background: linear-gradient(135deg, #4a68ff, #df77ff); /
+}
+.jumbotron {
+    background: rgb(255, 9, 9); 
+    color: #000000; 
+    border-radius: 15px;
+    padding: 2rem;
+}
+#countdown {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px 0;
+}
+.countdown-item {
+    display: inline-block;
+    margin: 0 10px;
+}
+.countdown-item span {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+}
+.alert-info {
+    background: rgba(255, 255, 255, 0.1); 
+    color: #000000; 
+    border: none; 
+    border-radius: 15px;
+}
+.form-control {
+    background: rgba(255, 255, 255, 0.2); 
+    color: #000000; 
+    border: 1px solid #5c00fb2e; 
+}
+.form-control::placeholder {
+    color: #000000; 
+}
+.btn-primary {
+    background: linear-gradient(135deg, #00f6ff, #c82bff); 
+    border: none; 
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #00c6ff, #7f00ff); 
+}
+
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Bienvenido a TechSolutions</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+        
+        <div id="countdown" class="alert alert-info mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+        function iniciarContador(fechaObjetivo) {
+            const countdownElement = document.getElementById('countdown');
+            const diasElement = document.getElementById('days');
+            const horasElement = document.getElementById('hours');
+            const minutosElement = document.getElementById('minutes');
+            const segundosElement = document.getElementById('seconds');
+
+        function actualizarContador() {
+            const ahora = new Date().getTime();
+            const distancia = fechaObjetivo - ahora;
+            const dias = Math.floor(distancia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((distancia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((distancia % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((distancia % (1000 * 60)) / 1000);
+
+            diasElement.innerHTML = dias;
+            horasElement.innerHTML = horas;
+            minutosElement.innerHTML = minutos;
+            segundosElement.innerHTML = segundos;
+            }
+            const intervalo = setInterval(actualizarContador, 1000);
+        }
+        const fechaObjetivo = new Date();
+        fechaObjetivo.setMonth(fechaObjetivo.getMonth() + 1);
+        iniciarContador(fechaObjetivo);
+
+/////////////////////////FORMULARIO//////////////////////////////////////////////////
+        
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+const nombre = document.getElementById('name').value.trim();
+const email = document.getElementById('email').value.trim();
+const mensaje = document.getElementById('message').value.trim();
+
+ if (!nombre || !email || !mensaje) {
+     alert('Completa todos los campos');
+return;
+    }
+
+if (!validarEmail(email)) {
+      alert('Ingresa un email valido');
+return;
+}
+
+guardarEnLocalStorage(nombre, email, mensaje);
+        alert('Gracias por contactarnos. Hemos guardado tu información.');
+contactForm.reset();
+});
+
+function validarEmail(email) {
+const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+return regex.test(email);
+}
+function guardarEnLocalStorage(nombre, email, mensaje) {
+
+    const contactos = JSON.parse(localStorage.getItem('contactos')) || [];
+    const nuevoContacto = { nombre, email, mensaje };
+    contactos.push(nuevoContacto);
+localStorage.setItem('contactos', JSON.stringify(contactos));
+        }
+    </script>
+</body>
+</html>
