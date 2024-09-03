@@ -1,0 +1,33 @@
+<style>
+        /* Estilos personalizados adicionales */
+        body {
+            padding-top: 60px;
+        }
+        #countdown {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+        #contactForm {
+            max-width: 500px;
+            margin: auto;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #contactForm h2 {
+            margin-bottom: 20px;
+            font-size: 1.75em;
+            text-align: center;
+        }
+    </style>
