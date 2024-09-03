@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovateTech</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e9ecef;
+            margin: 0;
+            padding: 20px;
+        }
+        .main-banner {
+            background: #ff0000;
+            color: #000000;
+            text-align: center;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+        #timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            background: #ff0000;
+            color: #000000;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            transition: background-color 0.6s ease, transform 0.6s ease;
+        }
+        #timer:hover {
+            background-color: #000000;
+            transform: scale(1.07);
+            color:#ff0000
+        }
+        .timer-segment {
+            background: #ffffff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.6s ease, transform 0.6s ease;
+        }
+        .timer-segment:hover {
+            background-color: #ff0000;
+            transform: scale(1.12);
+            color:#000000;
+        }
+        .form-box {
+            max-width: 550px;
+            margin: 0 auto;
+            background: #ff0000;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+        }
+        .submit-btn {
+            background: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            transition: background-color 0.4s ease, transform 0.4s ease;
+        }
+        .submit-btn:hover {
+            background: #ff5555;
+            transform: scale(1.06);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-banner">
+        <h1>Bienvenido a InnovateTech</h1>
+        <p>Explora nuestras soluciones innovadoras.</p>
+    </div>
+
+    <div id="timer">
+        <div class="timer-segment"><span id="days">00</span>Días</div>
+        <div class="timer-segment"><span id="hours">00</span>Horas</div>
+        <div class="timer-segment"><span id="minutes">00</span>Minutos</div>
+        <div class="timer-segment"><span id="seconds">00</span>Segundos</div>
+    </div>
+
+    <div class="form-box">
+        <h2>Contáctanos</h2>
+        <form id="contactForm">
+            <input type="text" class="form-control mb-3" id="fullName" placeholder="Nombre Completo" required>
+            <input type="email" class="form-control mb-3" id="emailAddress" placeholder="Correo Electrónico" required>
+            <textarea class="form-control mb-3" id="messageContent" rows="4" placeholder="Mensaje" required></textarea>
+            <button type="submit" class="btn submit-btn">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        function refreshCountdown() {
+            const deadline = new Date();
+            deadline.setMonth(deadline.getMonth() + 1);
+            deadline.setHours(0, 0, 0, 0);
+
+            const now = new Date();
+            const timeRemaining = deadline - now;
+
+            if (timeRemaining <= 0) {
+                document.getElementById('timer').textContent = "EL TIEMPO SE AGOTÓ";
+                return;
+            }
+
+            const daysLeft = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hoursLeft = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutesLeft = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsLeft = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            document.getElementById('days').textContent = String(daysLeft).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hoursLeft).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutesLeft).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(secondsLeft).padStart(2, '0');
+        }
+
+        setInterval(refreshCountdown, 1000);
+
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const fullName = document.getElementById('fullName').value.trim();
+            const emailAddress = document.getElementById('emailAddress').value.trim();
+            const messageContent = document.getElementById('messageContent').value.trim();
+
+            if (!fullName || !emailAddress || !messageContent) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(emailAddress)) {
+                alert('Por favor, ingrese un correo electrónico válido.');
+                return;
+            }
+
+            const contactInfo = { fullName, emailAddress, messageContent };
+            const storedData = JSON.parse(localStorage.getItem('contactInfo')) || [];
+            storedData.push(contactInfo);
+            localStorage.setItem('contactInfo', JSON.stringify(storedData));
+
+            alert('¡Gracias por tu mensaje!');
+            document.getElementById('contactForm').reset();
+        });
+    </script>
+
+</body>
+</html>
