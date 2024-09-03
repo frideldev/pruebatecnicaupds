@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Estilos personalizados adicionales */
+        body {
+            padding-top: 70px;
+            background-color: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background-color: #0f3b47;
+        }
+
+        .navbar-brand {
+            color: #ffffff !important;
+            transition: color 0.3s;
+        }
+
+        .navbar-brand:hover {
+            color: #b0bec5 !important;
+        }
+
+        .jumbotron {
+            background: linear-gradient(135deg, #004d40, #00796b);
+            color: #ffffff;
+            border-radius: 15px;
+            padding: 50px;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .jumbotron h1,
+        .jumbotron p {
+            animation: slideUp 1.5s ease-in-out;
+        }
+
+        .btn-primary {
+            background-color: #0c6354;
+            border-color: #146457;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #002d22;
+            border-color: #002d22;
+        }
+
+        #countdown {
+            font-size: 1.25em;
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(107, 83, 83, 0.1);
+            animation: fadeIn 2s ease-in-out, countdownAnimation 1s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+            color: #004d40;
+            animation: fadeIn 2s ease-in-out, countItemAnimation 1s ease-in-out;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            border-color: #00796b;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            animation: formInputAnimation 1s ease-in-out;
+        }
+
+        .form-control:focus {
+            border-color: #004d40;
+            box-shadow: 0 0 0 0.2rem rgba(0, 77, 60, 0.25);
+        }
+
+        .bg-light {
+            background-color: #ffffff !important;
+        }
+
+        .shadow {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <!-- Título principal -->
+        <div class="jumbotron p-5 rounded mt-5">
+            <h1 class="display-4">¡Bienvenid@ a TechSolutions!</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+
+        <!-- Contador regresivo -->
+        <div id="countdown" class="alert alert-info mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const targetDate = new Date();
+        targetDate.setMonth(targetDate.getMonth() + 1);
+
+        function updateCountdown() {
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff < 0) {
+                clearInterval(interval);
+                document.getElementById("countdown").innerHTML = "¡Evento finalizado!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days.toString().padStart(2, '0');
+            document.getElementById("hours").textContent = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").textContent = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").textContent = seconds.toString().padStart(2, '0');
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
