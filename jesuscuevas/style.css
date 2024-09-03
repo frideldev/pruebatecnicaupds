@@ -1,10 +1,34 @@
 <style>
-        /* Estilos personalizados adicionales */
         body {
             padding-top: 60px;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
         }
+        .navbar-custom {
+            background-color: #343a40;
+        }  
+        .navbar-brand {
+            font-weight: bold;
+            color: #0a0a0a !important;
+        } 
+        .jumbotron {
+            background: linear-gradient(135deg, #00d1c7 0%, #007bff 100%);
+            color: #fff;
+            padding: 4rem;
+            border-radius: 1rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        } 
+        .jumbotron h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .jumbotron p {
+            font-size: 1.2rem;
+        }  
         #countdown {
             font-size: 1.5em;
+            background-color:#07f5e9;
             text-align: center;
             margin: 20px 0;
         }
@@ -17,17 +41,27 @@
             font-size: 2em;
             font-weight: bold;
         }
-        #contactForm {
-            max-width: 500px;
-            margin: auto;
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 10px;
+        .countdown-item small {
+            display: block;
+            color: #343a40;
+        }
+        form {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 1rem;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        #contactForm h2 {
-            margin-bottom: 20px;
-            font-size: 1.75em;
-            text-align: center;
+        form h2 {
+            color: #343a40;
+        }
+
+        .btn-custom {
+            background-color: #00d1c7;
+            border: none;
+            color: #fff;
+        }
+
+        .btn-custom:hover {
+            background-color: #007bff;
         }
     </style>
