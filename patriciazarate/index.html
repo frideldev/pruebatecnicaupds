@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Estilos personalizados adicionales */
+        body {
+            padding-top: 60px;
+        }
+        #countdown {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .navbar-custom {
+            background-color: #e91e63;
+        }
+        .jumbotron-custom {
+            background-color: #f8bbd0;
+        }
+        .btn-custom {
+            background-color: #e91e63;
+            border-color: #e91e63;
+        }
+        .alert-custom {
+            background-color: #f48fb1;
+            color: #ffffff;
+        }
+        .form-control-custom {
+            border-color: #e91e63;
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron jumbotron-custom p-5 rounded">
+            <h1 class="display-4">Bienvenido a TechSolutions</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+        
+        <div id="countdown" class="alert alert-custom mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-custom" id="name" placeholder="Nombre">
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control form-control-custom" id="email" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control form-control-custom" id="message" rows="4" placeholder="Mensaje"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-custom w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function mueveReloj() {
+            const fechaActual = new Date();
+            let dia = fechaActual.getDate();
+            let hora = fechaActual.getHours();
+            let minuto = fechaActual.getMinutes();
+            let segundo = fechaActual.getSeconds();
+            dia = (dia <= 9) ? ("0" + dia) : dia;
+            hora = (hora <= 9) ? ("0" + hora) : hora;
+            minuto = (minuto <= 9) ? ("0" + minuto) : minuto;
+            segundo = (segundo <= 9) ? ("0" + segundo) : segundo;
+            document.getElementById('days').textContent = dia;
+            document.getElementById('hours').textContent = hora;
+            document.getElementById('minutes').textContent = minuto;
+            document.getElementById('seconds').textContent = segundo;
+            setTimeout(mueveReloj, 1000);
+        }
+        mueveReloj();
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var nombre = document.getElementById('name').value;
+            var gmail = document.getElementById('email').value;
+            var mensaje = document.getElementById('message').value;
+            if (!(nombre)) {
+                alert('Por favor, introduce tu nombre');
+                return;
+            }
+            if (!validarEmail(gmail)) {
+                alert('Por favor, introduce un gmail valido');
+                return;
+            }
+            if (!(mensaje)) {
+                alert('Por favor, introduce un mensaje');
+                return;
+            }
+            localStorage.setItem('nombre', nombre);
+            localStorage.setItem('gmail', gmail);
+            localStorage.setItem('mensaje', mensaje);
+            alert('Formulario enviado correctamente.');
+        });
+
+        function validarEmail(email) {
+            var signos = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return signos.test(email);
+        }
+
+        // Aquí deberás escribir el código JavaScript
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
