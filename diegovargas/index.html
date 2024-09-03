@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Estilos personalizados adicionales */
+        body {
+            padding-top: 60px;
+        }
+
+        #countdown {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Bienvenido a TechSolutions</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+
+        <div id="countdown" class="alert alert-info mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="dateForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Agrega tiempo a la Fecha Objetivo</h2>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="daysToAdd" placeholder="Días" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="hoursToAdd" placeholder="Horas" min="0">
+                    </div>
+                    <div class="mb-3">
+                        <input type="number" class="form-control" id="minutesToAdd" placeholder="Minutos" min="0">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Actualizar Fecha Objetivo</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        let fechaObjetivo = new Date();
+        fechaObjetivo.setHours(fechaObjetivo.getHours() + 1); // 1 hora adicional por defecto
+
+        function iniciarContador() {
+            const elementoContador = document.getElementById('countdown');
+
+            function actualizarContador() {
+                const ahora = new Date();
+                const tiempoRestante = fechaObjetivo - ahora;
+
+                const dias = Math.floor(tiempoRestante / (1000 * 60 * 60 * 24));
+                const horas = Math.floor((tiempoRestante % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((tiempoRestante % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = String(dias).padStart(2, '0');
+                document.getElementById('hours').textContent = String(horas).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutos).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(segundos).padStart(2, '0');
+
+                if (tiempoRestante < 0) {
+                    clearInterval(intervaloContador);
+                    elementoContador.innerHTML = "¡Evento terminado!";
+                }
+            }
+
+            actualizarContador();
+            const intervaloContador = setInterval(actualizarContador, 1000);
+        }
+
+        iniciarContador();
+
+        document.getElementById('dateForm').addEventListener('submit', function (evento) {
+            evento.preventDefault();
+
+            const diasToAdd = parseInt(document.getElementById('daysToAdd').value) || 0;
+            const horasToAdd = parseInt(document.getElementById('hoursToAdd').value) || 0;
+            const minutosToAdd = parseInt(document.getElementById('minutesToAdd').value) || 0;
+
+            fechaObjetivo.setDate(fechaObjetivo.getDate() + diasToAdd);
+            fechaObjetivo.setHours(fechaObjetivo.getHours() + horasToAdd);
+            fechaObjetivo.setMinutes(fechaObjetivo.getMinutes() + minutosToAdd);
+
+            iniciarContador();
+            alert('Fecha objetivo actualizada exitosamente.');
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function (evento) {
+            evento.preventDefault();
+
+            const nombre = document.getElementById('name').value.trim();
+            const correo = document.getElementById('email').value.trim();
+            const mensaje = document.getElementById('message').value.trim();
+
+            if (!nombre || !correo || !mensaje) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const patronCorreo = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!patronCorreo.test(correo)) {
+                alert('Ingresa un correo electrónico válido.');
+                return;
+            }
+
+            let contactos = JSON.parse(localStorage.getItem('contactos')) || [];
+            const mensajeDuplicado = contactos.some(contacto => contacto.mensaje === mensaje);
+
+            if (mensajeDuplicado) {
+                alert('Este mensaje ya ha sido enviado.');
+                return;
+            }
+            const datosContacto = {
+                nombre: nombre,
+                correo: correo,
+                mensaje: mensaje,
+                fechaHora: new Date().toLocaleString()
+            };
+
+            contactos.push(datosContacto);
+            localStorage.setItem('contactos', JSON.stringify(contactos));
+
+            alert('Formulario enviado exitosamente.');
+
+            document.getElementById('contactForm').reset();
+        });
+    </script>
+</body>
+</html>
