@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            padding-top: 60px;
+            background-image: url('fondo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: rgb(255, 6, 6); 
+        }
+
+        .navbar-brand {
+            color: #ff0000 !important; 
+            font-weight: bold;
+        }
+
+        .jumbotron-custom {
+            background-color: rgba(0, 0, 0, 0.5); 
+            color: rgb(255, 0, 0);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #countdown {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            background-color: rgba(21, 235, 255, 0.348); 
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        #contactForm {
+            background-color: rgba(53, 252, 255, 0.544); 
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #contactForm input, #contactForm textarea {
+            background-color: rgba(15, 209, 230, 0.442); 
+        }
+
+        #contactForm button {
+            background-color: #0ef0fca4; 
+            border: none;
+            color: black;
+        }
+
+        #contactForm button:hover {
+            background-color: #e3e3e3; 
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron jumbotron-custom bg-light p-5 rounded">
+            <h1 class="display-4">Bienvenido a TechSolutions</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+        
+        <div id="countdown" class="alert alert-info mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            const targetDate = new Date();
+            targetDate.setMonth(targetDate.getMonth() + 1); 
+
+            function updateCountdown() {
+                const now = new Date();
+                const timeDifference = targetDate - now;
+
+                if (timeDifference < 0) {
+                    countdownElement.innerHTML = "<p>El evento ha terminado.</p>";
+                    return;
+                }
+
+                const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            }
+
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+
+        
+        startCountdown();
+
+        
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            
+            if (name === '' || email === '' || message === '') {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(email)) {
+                alert('Por favor, ingresa un correo electrónico válido.');
+                return;
+            }
+
+            
+            const contactInfo = {
+                name: name,
+                email: email,
+                message: message,
+                date: new Date().toISOString()
+            };
+
+            const storedContacts = JSON.parse(localStorage.getItem('contacts')) || [];
+            storedContacts.push(contactInfo);
+            localStorage.setItem('contacts', JSON.stringify(storedContacts));
+
+            alert('Tu mensaje ha sido enviado exitosamente.');
+
+            
+            document.getElementById('contactForm').reset();
+        });
+    </script>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
