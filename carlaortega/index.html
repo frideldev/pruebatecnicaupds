@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechSolutions Landing Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* Estilos personalizados adicionales */
+
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;1,400&display=swap');
+        *{
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+            scroll-padding-top: 2rem;
+            box-sizing: border-box;
+        }
+        body {
+            padding-top: 60px;
+            background-color: #ffd8e7;
+        }
+        #countdown {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 20px 0;
+            color: #e9e9e9;
+            background-color: #ffffff;
+            border-radius: 20px;
+        }
+        .countdown-item {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .countdown-item span {
+            display: block;
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff80ab;
+        }
+        .jumbotron{
+            color: #000000;
+            text-align: center;
+            padding: 100px;
+            border-radius: 10px;
+        }
+        .form-control, .btnprimary{
+            background-color: #ff4081;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        .btn{
+            background-color: #ff4081;
+            border: none;
+        }
+
+        .btn:hover{
+            background-color: #ff80ab;
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">TechSolutions</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="jumbotron bg-light p-5 rounded">
+            <h1 class="display-4">Bienvenido a TechSolutions</h1>
+            <p class="lead">Innovando en el mundo del desarrollo de software.</p>
+        </div>
+        
+        <div id="countdown" class="alert alert-info mt-4">
+            <div class="countdown-item">
+                <span id="days">00</span>
+                Días
+            </div>
+            <div class="countdown-item">
+                <span id="hours">00</span>
+                Horas
+            </div>
+            <div class="countdown-item">
+                <span id="minutes">00</span>
+                Minutos
+            </div>
+            <div class="countdown-item">
+                <span id="seconds">00</span>
+                Segundos
+            </div>
+        </div>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 offset-md-3">
+                <form id="contactForm" class="bg-light p-4 rounded shadow">
+                    <h2 class="text-center mb-4">Contáctanos</h2>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="name" placeholder="Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="email" placeholder="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea class="form-control" id="message" rows="4" placeholder="Mensaje" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function iniciarContador(){
+            const fechaObjetivo = new Date();
+            fechaObjetivo.setMonth( fechaObjetivo.getMonth() + 1);
+
+            function actualizarContador(){
+                const ahora = new Date().getTime();
+                const tiempoRestante = fechaObjetivo - ahora;
+
+
+                const dias = Math.floor(tiempoRestante / (1000 * 60 *60 *24));
+                const horas = Math.floor((tiempoRestante % (1000 * 60 *60 *24)) / (1000 * 60 * 60));
+                const minutos = Math.floor((tiempoRestante % (1000 * 60 * 60)) / (1000 * 60));
+                const segundos = Math.floor((tiempoRestante % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = dias.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = horas.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutos.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = segundos.toString().padStart(2, '0');
+
+                if (tiempoRestante < 0){
+                    clearInterval(intervalo);
+                    document.getElementById('countdown').textContent = 'Se acabo el tiempo';
+                }
+            }
+
+            const intervalo = setInterval(actualizarContador, 1000);
+            
+        }
+
+        function validarFormulario(evento) {
+            evento.preventDefault();
+            const nombre = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const mensaje = document.getElementById('message').value.trim();
+
+            // Validación básica de campos
+            if (!nombre || !email || !mensaje) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            // Validación del formato de email
+            const formatoEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            if (!formatoEmail.test(email)) {
+                alert('Por favor, ingresa un email válido.');
+                return;
+            }
+            guardarEnLocalStorage(nombre, email, mensaje);
+
+            alert('Formulario enviado correctamente.');
+            document.getElementById('contactForm').reset();
+
+        }
+
+        function guardarEnLocalStorage(nombre, email, mensaje) {
+            const contactosGuardados = JSON.parse(localStorage.getItem('contactos')) || [];
+            const nuevoContacto = { nombre, email, mensaje, fecha: new Date().toLocaleString() };
+            contactosGuardados.push(nuevoContacto);
+            localStorage.setItem('contactos', JSON.stringify(contactosGuardados));
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            iniciarContador();
+            document.getElementById('contactForm').addEventListener('submit', validarFormulario);
+        });
+
+    </script>
+   
+</body>
+</html>
